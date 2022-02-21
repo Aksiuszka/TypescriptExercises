@@ -58,27 +58,126 @@ const integer:number = 6;
   members[0] = 12345;
 
   console.log('[Exercise 1.4]', members);
-  // ex5
-  // • Add type annotations (as explicit as possible)
-  // • Fix errors (if applicable)
-  const sequence: number[] = Array.from(Array(10).keys());
-  const animals: string[] = ['pangolin', 'aardvark', 'echidna', 'binturong'];
-  const stringsAndNumbers: (number | string)[] = [1, 'one', 2, 'two', 3, 'three'];
-  const allMyArrays: (number | string)[][] = [sequence, animals, stringsAndNumbers];
+//   // ex5
+//   // • Add type annotations (as explicit as possible)
+//   // • Fix errors (if applicable)
+//   const sequence: number[] = Array.from(Array(10).keys());
+//   const animals: string[] = ['pangolin', 'aardvark', 'echidna', 'binturong'];
+//   const stringsAndNumbers: (number | string)[] = [1, 'one', 2, 'two', 3, 'three'];
+//   const allMyArrays: (number | string)[][] = [sequence, animals, stringsAndNumbers];
 
-  console.log('Solution 1.5', allMyArrays);
-  //ex 6
-  // • Add type annotations (as explicit as possible)
-  // • Fix errors (if applicable)
-  const inventoryItem: [string, number] = ['fidget wibbit', 11];
+//  // console.log('Solution 1.5', allMyArrays);
+//   //ex 6
+//   // • Add type annotations (as explicit as possible)
+//   // • Fix errors (if applicable)
+//   const inventoryItem: [string, number] = ['fidget wibbit', 11];
 
-  // later we destructure it
-  const [names, qty] = inventoryItem;
+//   // later we destructure it
+//   const [names, qty] = inventoryItem;
 
-  const msg = addInventory(names, qty);
+//   const msg = addInventory(names, qty);
 
-  console.log('[Exercise 1.6]', msg);
+//   console.log('[Exercise 1.6]', msg);
 
-  function addInventory(names: string, quantity: number): string {
-    return `Added ${quantity} ${names}s to inventory.`;
+//   function addInventory(names: string, quantity: number): string {
+//     return `Added ${quantity} ${names}s to inventory.`;
+//   }
+// ex 7
+// Instructions:
+  // • Create an interface `CartItem` and replace the param's type with it
+  // • Make variantId optional
+
+  interface CartItem {
+    id: number
+    title: string
+    variantID?: number
+
   }
+  function addToCart(item:CartItem) {
+    console.log('[Exercise 2.1]', `Adding "${item.title}" to cart.`);
+  }
+
+  addToCart({id: 1, title: 'Concrete shoes'});
+
+  //ex8
+   // Instructions:
+  // • Create and implement an interface on `Person` to ensure it always has accessible
+  //   `name` and `age` member properties.
+
+  interface Person {
+    name: string;
+    age: number;
+  }
+
+  class Person implements Person {
+    constructor(public name: string, public age: number) {}
+  }
+
+  const jane = new Person('Jane', 31);
+
+  console.log('[Solution 2.2]', `${jane.name} is ${jane.age} years old.`);
+  //ex9
+  // Instructions:
+  // • Create an interface `Coords` that has numeric `latitude` and `longitude` properties.
+  // • Extend the existing interface `City` (without modifying it inline) by adding a
+  //   `coords` property of type `Coords`.
+  // • Fix whatever is wrong with `tampa`
+  // [do not edit] (pretend this is coming from external `foo.d.ts` lib)
+
+
+
+  interface City {
+    name: string
+    coords: Coords
+  }
+ 
+  interface Coords{
+    latitude: number
+    longitude: number
+  }
+  
+
+  const montreal = {
+    coords: {
+      latitude: 42.332,
+      longitude: -73.324,
+    },
+    name: 'Montréal',
+  };
+
+  const tampa = {
+    coords: {
+      latitude: 27.9478,
+      longitude: -82.4584,
+    },
+    name: 'Tampa',
+  };
+
+  function getCityInfo(city: City) {
+    const coords = `(${city.coords.latitude.toFixed(3) }, ${city.coords.longitude.toFixed(3) })`;
+    return `${city.name.toUpperCase()} is located at ${coords}.`;
+  }
+
+  console.log('[Exercise 2.3]', `${getCityInfo(montreal)} \n\n ${getCityInfo(tampa)}`);
+
+// ex 10
+// The purpose of this exercise is simply to illustrate a use of `readonly`
+
+interface UserSchema {
+  readonly id: number;
+  name: string;
+}
+
+class User implements UserSchema {
+  constructor(public name: string, readonly id: number) {}
+}
+
+const user = new User('Dog', 1);
+
+console.log(user.id); // readable
+
+user.name = 'Harold'; // writable
+user.id = 5; // not writable
+
+console.log(`User:`, user)
+}
